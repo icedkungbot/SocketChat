@@ -17,9 +17,9 @@ const server = app.listen(process.env.PORT || 8080, () => {
     console.log(`server is running on ${process.env.PORT}`);
 });
 
-const io = socketio(server,{
+const io = socketio(server, {
   cors: {
-    origin: "*"
+    origin: '*'
   }
 });
 
