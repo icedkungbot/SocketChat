@@ -149,8 +149,7 @@
         (function MySocket(){
             const socket = io('http://localhost:8080',{
   cors: {
-    origin: "http://localhost:8080",
-    methods: ["GET", "POST"]
+    origin: "*"
   }
 });
             const sender = document.getElementById('sender');
