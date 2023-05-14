@@ -2,7 +2,9 @@ const express = require("express");
 const socketio = require("socket.io");
 const app = express();
 const dotenv = require("dotenv").config();
+const cors = require("cors");
 
+app.use(cors());
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(express.static("views"));
@@ -15,7 +17,12 @@ const server = app.listen(process.env.PORT || 8080, () => {
     console.log(`server is running on ${process.env.PORT}`);
 });
 
-const io = socketio(server);
+const io = socketio(server,{
+  cors: {
+    origin: "http://localhost:8080",
+    methods: ["GET", "POST"]
+  }
+});
 
 io.on("connection", (socket) => {
     socket.on("new-user", (name) => {
