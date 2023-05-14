@@ -3,8 +3,13 @@ const socketio = require("socket.io");
 const app = express();
 const dotenv = require("dotenv").config();
 const cors = require("cors");
-
 app.use(cors());
+const httpServer = require("http").createServer(app);
+const io = require("socket.io")(httpServer, {
+    cors: {
+      origin: "*"
+    }
+  });
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(express.static("views"));
@@ -13,14 +18,8 @@ app.get("/", (req, res) => {
     res.render("index");
 });
 
-const server = app.listen(process.env.PORT || 8080, () => {
-    console.log(`server is running on ${process.env.PORT}`);
-});
-
-const io = socketio(server, {
-  cors: {
-    origin: '*'
-  }
+httpServer.listen(process.env.PORT || 8080, () => {
+    console.log(`Server is running at ${httpServer.address().address}:${httpServer.address().port}`);
 });
 
 io.on("connection", (socket) => {
