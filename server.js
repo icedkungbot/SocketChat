@@ -7,7 +7,7 @@ app.use(cors());
 const httpServer = require("http").createServer(app);
 const io = require("socket.io")(httpServer, {
     cors: {
-      origins: ["http://localhost:5001"]
+      origins: ["https://chat-tiget.onrender.com/","http://localhost:5001"]
     }
   });
 app.set("view engine", "ejs");
