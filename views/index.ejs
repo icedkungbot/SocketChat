@@ -147,7 +147,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
         (function MySocket(){
-            const socket = io('http://localhost:5001', { origin: "http://localhost:5001" });
+            const socket = io('http://localhost:5001', { origins: ["http://localhost:5001"] });
             const sender = document.getElementById('sender');
             const inputMgs = document.getElementById('inputMgs');
             const send = document.getElementById('send');
