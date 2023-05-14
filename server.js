@@ -3,19 +3,29 @@ const socketio = require("socket.io");
 const app = express();
 const dotenv = require("dotenv").config();
 const cors = require("cors");
-app.use(cors());
 const httpServer = require("http").createServer(app);
-const io = require("socket.io")(httpServer, {
-    cors: {
-      origins: ["https://chat-tiget.onrender.com/","http://localhost:5001"]
-    }
-  });
+
+app.use(cors());
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(express.static("views"));
 
 app.get("/", (req, res) => {
     res.render("index");
+});
+
+const io = require("socket.io")(httpServer , {
+  origins: ["*"],
+
+  handlePreflightRequest: (req, res) => {
+    res.writeHead(200, {
+      "Access-Control-Allow-Origin": "https://example.com",
+      "Access-Control-Allow-Methods": "GET,POST",
+      "Access-Control-Allow-Headers": "my-custom-header",
+      "Access-Control-Allow-Credentials": true
+    });
+    res.end();
+  }
 });
 
 httpServer.listen(process.env.PORT || 5001, () => {
