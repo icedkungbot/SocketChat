@@ -7,7 +7,7 @@ app.use(cors());
 const httpServer = require("http").createServer(app);
 const io = require("socket.io")(httpServer, {
     cors: {
-      origin: "http://localhost:5001"
+      origins: ["http://localhost:5001"]
     }
   });
 app.set("view engine", "ejs");
