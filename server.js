@@ -22,7 +22,7 @@ httpServer.listen(process.env.PORT || 5001, () => {
 
 const io = require("socket.io")(httpServer, {
     cors: {
-      origins: ["https://socketchat--arnonsang-ngern.repl.co","http://localhost:5001"]
+      origins: ["*"]
       
     },
   handlePreflightRequest: (req, res) => {
