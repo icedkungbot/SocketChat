@@ -149,7 +149,7 @@
         (function MySocket(){
             const socket = io('https://socketchat--arnonsang-ngern.repl.co',{
     cors: {
-      origins: ["https://socketchat--arnonsang-ngern.repl.co","http://localhost:5001"]
+      origins: ["*"]
     },
       handlePreflightRequest: (req, res) => {
         const headers = {
