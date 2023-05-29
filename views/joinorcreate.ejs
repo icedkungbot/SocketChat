@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="https://cdn.discordapp.com/attachments/885089951207804949/1112741854258139268/logo.png" type="image/x-icon">
+    <title>Join chat room | TIGET</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body{
+            background-color: #131313;
+        }
+        .container{
+            width: 100%;
+            max-width: 920px;
+            margin: 0 auto;
+            padding: 20px;
+            margin-top: 100px;
+            
+            
+        }
+        form{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #3a3a3a;
+            padding: 1.3rem;
+        }
+        form label{
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #c09e6b;
+        }
+        form input{
+            width: 100%;
+            max-width: 400px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #131313;
+            margin-bottom: 20px;
+        }
+        form button{
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: 1px solid #131313;
+            background-color: #131313;
+            color: #c09e6b;
+            font-size: 20px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        form button:hover{
+            background-color: #c09e6b;
+            color: #131313;
+        }
+
+    </style>
+
+</head>
+<body>
+    <div class="container">
+        <form id="joinorcreate" method="get" action="/chatroom">
+            <label for="username">Display name</label>
+            <input type="text" name="username" id="username" placeholder="Enter your display name" required>
+            <label for="roomcode">Room id</label>
+            <input type="text" name="roomcode" id="roomcode" placeholder="Enter room id, Empty this to create new room">
+            <button type="submit" id="joincreatebutt">Create</button>
+        </form>
+        
+    </div>
+
+    <!-- import socket io -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        /* server side code
+        io.on("connection", (socket) => {
+    
+    socket.on("join-room", ({roomId, username}) => {
+        if(roomId == null || roomId == undefined || roomId == ""){
+            roomId = Math.floor(Math.random() * 1000000);
+        }
+        socket.join(roomId);
+        socket.to(roomId).emit("user-connected", username);
+        socket.on("message", (data) => {
+            io.to(roomId).emit("message", {
+                sender: data.sender,
+                message: data.message
+            });
+        }
+        );
+    }
+    );
+
+    socket.on("disconnect", () => {
+        socket.broadcast.emit("user-disconnected");
+    }
+    );
+}
+);
+ */
+
+    (function Socket() {
+        const socket = io("http://localhost:8080",{
+    cors: {
+        origins: ["http://localhost:8080"]
+    },
+    handlePreflightRequest: (req, res) => {
+        const headers = {
+            "Access-Control-Allow-Headers": "Content-Type, Authorization",
+            "Access-Control-Allow-Origin": "*", //or the specific origin you want to give access to,
+            "Access-Control-Allow-Credentials": true
+        };
+        res.writeHead(200, headers);
+        res.end();
+    }
+    });
+
+    const joinorcreate = document.getElementById("joinorcreate");
+    const username = document.getElementById("username");
+    const roomcode = document.getElementById("roomcode");
+    const joincreatebutt = document.getElementById("joincreatebutt");
+    if(username.value == null || username.value == undefined || username.value == ""){
+        username.value = "Anonymous#"+ Math.floor(Math.random() * 1000000) ;
+    }
+    roomcode.addEventListener("keyup", (e) => {
+        if(e.keyCode === 13){
+            e.preventDefault();
+            joincreatebutt.click();
+        }
+
+        if(roomcode.value == null || roomcode.value == undefined || roomcode.value == ""){
+            joincreatebutt.innerText = "Create";
+        }else{
+            joincreatebutt.innerText = "Join";
+        }
+    });
+
+    roomcode.addEventListener("keydown", (e) => {
+        if(e.keyCode === 13){
+            e.preventDefault();
+        }
+
+        if(roomcode.value == null || roomcode.value == undefined || roomcode.value == ""){
+            joincreatebutt.innerText = "Create";
+        }else{
+            joincreatebutt.innerText = "Join";
+        }
+    });
+
+
+
+    joinorcreate.addEventListener("submit", (e) => {
+        e.preventDefault();
+        if(username.value == null || username.value == undefined || username.value == ""){
+        username.value = "Anonymous#"+ Math.floor(Math.random() * 1000000) ;
+        }
+        if(roomcode.value == null || roomcode.value == undefined || roomcode.value == ""){
+            roomcode.value = 'new_room';
+        }
+        joinorcreate.submit();
+    });
+
+    })()
+
+    </script>
+</body>
+</html>
